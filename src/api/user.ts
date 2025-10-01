@@ -13,3 +13,11 @@ export const loginUser = (body: LoginPayload) => {
     refreshToken: string;
   }>('/login', body);
 };
+
+export const refreshSession = (body: { refreshToken: string }) => {
+  return httpClient.patch<{
+    message: string;
+    accessToken: string;
+    refreshToken: string;
+  }>('/refresh', body);
+};
