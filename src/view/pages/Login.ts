@@ -3,6 +3,10 @@ import { type LoginPayload, loginSchema } from '../../schemas/login.schema.ts';
 import { ajv } from '../../initializers/ajv.ts';
 import { loginUser } from '../../api/user.ts';
 import { AxiosError } from 'axios';
+import {
+  accessTokenStorage,
+  refreshTokenStorage,
+} from '../../initializers/token.ts';
 
 export const Login: Component = {
   render(): Element {
@@ -68,7 +72,11 @@ export const Login: Component = {
       }
 
       try {
-        const response = await loginUser(data);
+        const {
+          data: { accessToken, refreshToken },
+        } = await loginUser(data);
+        accessTokenStorage.set(accessToken);
+        refreshTokenStorage.set(refreshToken);
       } catch (err) {
         if (err instanceof AxiosError && err.response) {
           if (err.response.status === 400) {

@@ -7,5 +7,9 @@ export const registerUser = (body: RegisterPayload) => {
 };
 
 export const loginUser = (body: LoginPayload) => {
-  return httpClient.post('/login', body);
+  return httpClient.post<{
+    message: string;
+    accessToken: string;
+    refreshToken: string;
+  }>('/login', body);
 };
