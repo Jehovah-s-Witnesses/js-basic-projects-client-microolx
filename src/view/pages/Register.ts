@@ -3,9 +3,13 @@ import {
   type RegisterPayload,
   registerSchema,
 } from '../../schemas/register.schema.ts';
-import { registerUser } from '../../api/user.ts';
+import { loginUser, registerUser } from '../../api/user.ts';
 import { ajv } from '../../initializers/ajv.ts';
 import { AxiosError } from 'axios';
+import {
+  accessTokenStorage,
+  refreshTokenStorage,
+} from '../../initializers/token.ts';
 
 export const Register: Component = {
   render(): Element {
@@ -75,7 +79,12 @@ export const Register: Component = {
       }
 
       try {
-        const register = await registerUser(data);
+        await registerUser(data);
+        const {
+          data: { accessToken, refreshToken },
+        } = await loginUser(data);
+        accessTokenStorage.set(accessToken);
+        refreshTokenStorage.set(refreshToken);
       } catch (error) {
         console.log(error);
         if (error instanceof AxiosError && error.response) {
