@@ -10,7 +10,7 @@ import {
   accessTokenStorage,
   refreshTokenStorage,
 } from '../../initializers/token.ts';
-import { FormControl } from '../components/FormControl/FormControl.ts';
+import { FormInput } from '../components/FormInput/FormInput.ts';
 import { Form } from '../components/Form/Form.ts';
 import { Title } from '../components/Title/Title.ts';
 import { Container } from '../components/Container/Container.ts';
@@ -19,20 +19,17 @@ export const Register: Component = {
   render(): Element {
     const wrapper = document.createElement('div');
 
-    const emailInput = new FormControl({
-      type: 'input',
+    const emailInput = new FormInput({
       name: 'email',
       label: 'Email',
     });
 
-    const usernameInput = new FormControl({
-      type: 'input',
+    const usernameInput = new FormInput({
       name: 'username',
       label: 'username',
     });
 
-    const passwordInput = new FormControl({
-      type: 'input',
+    const passwordInput = new FormInput({
       name: 'password',
       label: 'Password',
     });

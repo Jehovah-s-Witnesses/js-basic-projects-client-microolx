@@ -1,8 +1,8 @@
 import type { Component } from '../../../types/Component.ts';
-import type { FormControl } from '../FormControl/FormControl.ts';
 import { Button } from '../Button/Button.ts';
 import type { Schema } from 'ajv';
 import { ajv } from '../../../initializers/ajv.ts';
+import type { FormControl } from './Form.types.ts';
 
 type FormParams<DataType> = {
   onSubmit: (data: DataType) => Promise<void>;
@@ -21,7 +21,7 @@ export class Form<DataType> implements Component {
     });
 
     const button = new Button({
-      text: 'submit',
+      text: 'Submit',
       variant: 'info',
       type: 'submit',
     });

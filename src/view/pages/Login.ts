@@ -6,25 +6,43 @@ import {
   accessTokenStorage,
   refreshTokenStorage,
 } from '../../initializers/token.ts';
-import { FormControl } from '../components/FormControl/FormControl.ts';
+import { FormInput } from '../components/FormInput/FormInput.ts';
 import { Form } from '../components/Form/Form.ts';
 import { Title } from '../components/Title/Title.ts';
 import { Container } from '../components/Container/Container.ts';
+import { FormSelect } from '../components/FormSelect/FormSelect.ts';
 
 export const Login: Component = {
   render(): Element {
     const wrapper = document.createElement('div');
 
-    const usernameInput = new FormControl({
-      type: 'input',
+    const usernameInput = new FormInput({
       name: 'username',
       label: 'Username',
     });
 
-    const passwordInput = new FormControl({
-      type: 'input',
+    const passwordInput = new FormInput({
       name: 'password',
       label: 'Password',
+    });
+
+    const selectElement = new FormSelect({
+      name: 'currency',
+      label: 'Currency',
+      options: [
+        {
+          value: 'usd',
+          label: 'USD',
+        },
+        {
+          value: 'uan',
+          label: 'HRYVNA',
+        },
+        {
+          value: 'eur',
+          label: 'EURO',
+        },
+      ],
     });
 
     const currentForm = new Form<LoginPayload>({
@@ -44,7 +62,7 @@ export const Login: Component = {
         }
       },
       validationSchema: loginSchema,
-      controls: [usernameInput, passwordInput],
+      controls: [usernameInput, passwordInput, selectElement],
     });
 
     window.currentForm = currentForm;

@@ -1,22 +1,21 @@
-import type { Component } from '../../../types/Component.ts';
-import { Form_Control_Error_Classname } from './FormControl.constants.ts';
+import { Form_Input_Error_Classname } from './FormInput.constants.ts';
+import type { FormControl } from '../Form/Form.types.ts';
 
-type FormControlParams = {
-  type: 'input' | 'select';
+type FormInputParams = {
   name: string;
   label: string;
 };
 
-export class FormControl implements Component {
-  formControlWrapper = document.createElement('div');
+export class FormInput implements FormControl {
+  wrapperElement = document.createElement('div');
   interactiveElement: HTMLInputElement | HTMLSelectElement;
-  errorTextElement: HTMLElement | null;
+  errorTextElement: HTMLElement | null = null;
   name: string;
 
-  constructor(params: FormControlParams) {
-    this.formControlWrapper.classList.add('field');
+  constructor(params: FormInputParams) {
+    this.wrapperElement.classList.add('field');
     const id = crypto.randomUUID();
-    this.formControlWrapper.innerHTML = `<label class="label" for="${id}">${params.label}</label>`;
+    this.wrapperElement.innerHTML = `<label class="label" for="${id}">${params.label}</label>`;
 
     this.name = params.name;
 
@@ -31,7 +30,7 @@ export class FormControl implements Component {
     controlWrapper.classList.add('control');
     controlWrapper.append(this.interactiveElement);
 
-    this.formControlWrapper.append(controlWrapper);
+    this.wrapperElement.append(controlWrapper);
   }
 
   setError(message: string) {
@@ -41,22 +40,24 @@ export class FormControl implements Component {
       return;
     }
 
-    this.errorTextElement = document.createElement('p');
-    this.errorTextElement.classList.add('help', Form_Control_Error_Classname);
-    this.errorTextElement.innerText = message;
-    this.interactiveElement.classList.add(Form_Control_Error_Classname);
+    this.interactiveElement.classList.add(Form_Input_Error_Classname);
 
-    this.formControlWrapper.append(this.errorTextElement);
+    this.errorTextElement = document.createElement('p');
+    this.errorTextElement.classList.add('help', Form_Input_Error_Classname);
+    this.errorTextElement.innerText = message;
+    this.interactiveElement.classList.add(Form_Input_Error_Classname);
+
+    this.wrapperElement.append(this.errorTextElement);
   }
 
   clearError() {
     this.errorTextElement?.remove();
     this.errorTextElement = null;
 
-    this.interactiveElement.classList.remove(Form_Control_Error_Classname);
+    this.interactiveElement.classList.remove(Form_Input_Error_Classname);
   }
 
   render(): Element {
-    return this.formControlWrapper;
+    return this.wrapperElement;
   }
 }
