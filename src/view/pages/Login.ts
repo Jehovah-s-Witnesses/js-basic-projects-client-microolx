@@ -1,6 +1,5 @@
 import type { Component } from '../../types/Component.ts';
 import { type LoginPayload, loginSchema } from '../../schemas/login.schema.ts';
-import { ajv } from '../../initializers/ajv.ts';
 import { loginUser } from '../../api/user.ts';
 import { AxiosError } from 'axios';
 import {
@@ -9,12 +8,12 @@ import {
 } from '../../initializers/token.ts';
 import { FormControl } from '../components/FormControl/FormControl.ts';
 import { Form } from '../components/Form/Form.ts';
+import { Title } from '../components/Title/Title.ts';
+import { Container } from '../components/Container/Container.ts';
 
 export const Login: Component = {
   render(): Element {
     const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = `<h1 class="title">Login</h1>`;
 
     const usernameInput = new FormControl({
       type: 'input',
@@ -50,7 +49,13 @@ export const Login: Component = {
 
     window.currentForm = currentForm;
 
-    wrapper.append(currentForm.render());
+    const title = new Title({
+      text: 'Login',
+    });
+
+    const container = new Container();
+
+    wrapper.append(container.render([title.render(), currentForm.render()]));
 
     return wrapper;
   },

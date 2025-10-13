@@ -10,99 +10,61 @@ import {
   accessTokenStorage,
   refreshTokenStorage,
 } from '../../initializers/token.ts';
+import { FormControl } from '../components/FormControl/FormControl.ts';
+import { Form } from '../components/Form/Form.ts';
+import { Title } from '../components/Title/Title.ts';
+import { Container } from '../components/Container/Container.ts';
 
 export const Register: Component = {
   render(): Element {
     const wrapper = document.createElement('div');
 
-    wrapper.innerHTML = `<h1 class="title"> Register </h1>`;
-
-    const form = document.createElement('form');
-
-    form.innerHTML = `
-<div class="field">
-  <label class="label">Email</label>
-  <div class="control">
-    <input class="input" type="email" name="email" placeholder="Email input">
-  </div>
-</div>
-
-<div class="field">
-  <label class="label">Username</label>
-  <div class="control">
-    <input class="input" type="text" name="username" placeholder="Username input">
-  </div>
-</div>
-
-<div class="field password-field">
-  <label class="label">Password</label>
-  <div class="control">
-    <input class="input" type="password"  name="password" placeholder="Password input">
-  </div>
-</div>
-
-<div class="field is-grouped">
-  <div class="control">
-    <button class="button is-link">Submit</button>
-  </div>
-</div>`;
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-
-      // const registrerNotification = new Notification();
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData) as RegisterPayload;
-      const valid = ajv.validate(registerSchema, data);
-      const inputWrapElem = document.querySelectorAll('.field');
-      inputWrapElem.forEach((elem) => {
-        elem.querySelector('.help')?.remove();
-        elem.querySelector('.input')?.classList.remove('is-danger');
-      });
-
-      if (!valid) {
-        ajv.errors?.forEach((err) => {
-          const inputName = err.instancePath.replace('/', '');
-          const inputElement = form.elements.namedItem(inputName);
-          if (inputElement instanceof HTMLInputElement) {
-            inputElement.classList.add('is-danger');
-            const dangerText = document.createElement('p');
-            dangerText.classList.add('help', 'is-danger');
-            dangerText.innerText = err.message!;
-            const wrapElement = inputElement.closest('.field');
-            if (!wrapElement?.querySelector('.help')) {
-              wrapElement?.append(dangerText);
-            }
-          }
-        });
-        return;
-      }
-
-      try {
-        await registerUser(data);
-        const {
-          data: { accessToken, refreshToken },
-        } = await loginUser(data);
-        accessTokenStorage.set(accessToken);
-        refreshTokenStorage.set(refreshToken);
-      } catch (error) {
-        console.log(error);
-        if (error instanceof AxiosError && error.response) {
-          if (error.response.status === 400) {
-            const inputLastElement = document.querySelector('.password-field');
-            const errorWrapper = document.createElement('div');
-            errorWrapper.classList.add('is-danger', 'help');
-            errorWrapper.innerHTML = '';
-            const textError = document.createElement('p');
-            textError.innerHTML = error.response.data.message;
-            errorWrapper.append(textError);
-            inputLastElement?.append(errorWrapper);
-          }
-        }
-      }
+    const emailInput = new FormControl({
+      type: 'input',
+      name: 'email',
+      label: 'Email',
     });
 
-    wrapper.append(form);
+    const usernameInput = new FormControl({
+      type: 'input',
+      name: 'username',
+      label: 'username',
+    });
+
+    const passwordInput = new FormControl({
+      type: 'input',
+      name: 'password',
+      label: 'Password',
+    });
+
+    const container = new Container();
+
+    const title = new Title({
+      text: 'Register',
+    });
+
+    const currentForm = new Form<RegisterPayload>({
+      onSubmit: async (data) => {
+        try {
+          await registerUser(data);
+          const {
+            data: { accessToken, refreshToken },
+          } = await loginUser(data);
+          accessTokenStorage.set(accessToken);
+          refreshTokenStorage.set(refreshToken);
+        } catch (err) {
+          if (err instanceof AxiosError && err.response) {
+            if (err.response.status === 400) {
+              passwordInput.setError(err.response.data.message);
+            }
+          }
+        }
+      },
+      validationSchema: registerSchema,
+      controls: [emailInput, usernameInput, passwordInput],
+    });
+
+    wrapper.append(container.render([title.render(), currentForm.render()]));
 
     return wrapper;
   },
