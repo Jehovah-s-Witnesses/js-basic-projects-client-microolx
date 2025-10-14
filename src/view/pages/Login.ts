@@ -11,6 +11,7 @@ import { Form } from '../components/Form/Form.ts';
 import { Title } from '../components/Title/Title.ts';
 import { Container } from '../components/Container/Container.ts';
 import { FormSelect } from '../components/FormSelect/FormSelect.ts';
+import { FormCheckbox } from '../components/FormCheckbox/FormCheckbox.ts';
 
 export const Login: Component = {
   render(): Element {
@@ -45,6 +46,33 @@ export const Login: Component = {
       ],
     });
 
+    const checkboxElement = new FormCheckbox({
+      name: 'days',
+      options: [
+        {
+          value: 'Monday',
+        },
+        {
+          value: 'Tuesday',
+        },
+        {
+          value: 'Wednesday',
+        },
+        {
+          value: 'Thursday',
+        },
+        {
+          value: 'Friday',
+        },
+        {
+          value: 'Saturday',
+        },
+        {
+          value: 'Sunday',
+        },
+      ],
+    });
+
     const currentForm = new Form<LoginPayload>({
       onSubmit: async (data) => {
         try {
@@ -65,7 +93,7 @@ export const Login: Component = {
       controls: [usernameInput, passwordInput, selectElement],
     });
 
-    window.currentForm = currentForm;
+    //window.currentForm = currentForm;
 
     const title = new Title({
       text: 'Login',
@@ -73,7 +101,13 @@ export const Login: Component = {
 
     const container = new Container();
 
-    wrapper.append(container.render([title.render(), currentForm.render()]));
+    wrapper.append(
+      container.render([
+        title.render(),
+        currentForm.render(),
+        checkboxElement.render(),
+      ]),
+    );
 
     return wrapper;
   },

@@ -65,7 +65,6 @@ export class FormSelect implements FormControl {
     this.errorMessageElement = document.createElement('p');
     this.errorMessageElement.classList.add('help', Form_Input_Error_Classname);
     this.errorMessageElement.innerText = message;
-    this.errorMessageElement.classList.add(Form_Input_Error_Classname);
 
     this.wrapperElement.append(this.errorMessageElement);
   }
@@ -74,7 +73,7 @@ export class FormSelect implements FormControl {
     this.errorMessageElement?.remove();
     this.errorMessageElement = null;
 
-    this.wrapperSelectElement.classList.add(Form_Input_Error_Classname);
+    this.wrapperSelectElement.classList.remove(Form_Input_Error_Classname);
   }
 
   render() {
