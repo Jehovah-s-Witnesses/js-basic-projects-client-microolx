@@ -35,7 +35,7 @@ export class FormInput implements FormControl {
 
   setError(message: string) {
     if (this.errorTextElement) {
-      this.errorTextElement.innerText = message;
+      this.errorTextElement.textContent = message;
 
       return;
     }
@@ -44,7 +44,7 @@ export class FormInput implements FormControl {
 
     this.errorTextElement = document.createElement('p');
     this.errorTextElement.classList.add('help', Form_Input_Error_Classname);
-    this.errorTextElement.innerText = message;
+    this.errorTextElement.textContent = message;
     this.interactiveElement.classList.add(Form_Input_Error_Classname);
 
     this.wrapperElement.append(this.errorTextElement);
@@ -57,7 +57,7 @@ export class FormInput implements FormControl {
     this.interactiveElement.classList.remove(Form_Input_Error_Classname);
   }
 
-  render(): Element {
+  render() {
     return this.wrapperElement;
   }
 }

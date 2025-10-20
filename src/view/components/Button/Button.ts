@@ -10,7 +10,7 @@ export class Button implements Component {
   buttonElement = document.createElement('button');
 
   constructor(params: ButtonParams) {
-    this.buttonElement.innerText = params.text;
+    this.buttonElement.textContent = params.text;
     this.buttonElement.type = params.type ?? 'button';
     this.buttonElement.className = classNames('button', {
       'is-danger': params.variant === 'danger',
@@ -20,7 +20,7 @@ export class Button implements Component {
     });
   }
 
-  render(): Element {
+  render() {
     return this.buttonElement;
   }
 }
