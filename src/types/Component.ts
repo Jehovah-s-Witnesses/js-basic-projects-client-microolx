@@ -1,3 +1,3 @@
 export interface Component {
-  render(children?: Element[]): Element;
+  render(children?: Element[]): HTMLElement;
 }

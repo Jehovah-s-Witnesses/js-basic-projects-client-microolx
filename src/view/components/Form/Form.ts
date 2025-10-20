@@ -19,6 +19,7 @@ export class Form<DataType> implements Component {
       this.formWrapperElement.append(control.render());
       this.controls[control.name] = control;
     });
+    this.formWrapperElement.dataset.testid = 'form';
 
     const button = new Button({
       text: 'Submit',
@@ -58,7 +59,7 @@ export class Form<DataType> implements Component {
     });
   }
 
-  render(): Element {
+  render() {
     return this.formWrapperElement;
   }
 }

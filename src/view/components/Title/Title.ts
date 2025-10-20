@@ -10,7 +10,7 @@ export class Title implements Component {
   titleWrapper = document.createElement('div');
 
   constructor(params: TitleParams) {
-    this.titleWrapper.innerText = params.text;
+    this.titleWrapper.textContent = params.text;
     this.titleWrapper.className = classNames('title', {
       'is-1': !params.variant || params.variant === '1',
       'is-2': params.variant === '2',
@@ -21,7 +21,7 @@ export class Title implements Component {
     });
   }
 
-  render(): Element {
+  render() {
     return this.titleWrapper;
   }
 }

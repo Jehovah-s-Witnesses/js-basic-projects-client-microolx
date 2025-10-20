@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     routes: [
       {
         path: '/login',
-        component: Login,
+        component: new Login(),
       },
       {
         path: '/register',

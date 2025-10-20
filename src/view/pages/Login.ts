@@ -10,11 +10,11 @@ import { FormInput } from '../components/FormInput/FormInput.ts';
 import { Form } from '../components/Form/Form.ts';
 import { Title } from '../components/Title/Title.ts';
 import { Container } from '../components/Container/Container.ts';
-import { FormSelect } from '../components/FormSelect/FormSelect.ts';
-import { FormCheckbox } from '../components/FormCheckbox/FormCheckbox.ts';
+// import { FormSelect } from '../components/FormSelect/FormSelect.ts';
+// import { FormCheckbox } from '../components/FormCheckbox/FormCheckbox.ts';
 
-export const Login: Component = {
-  render(): Element {
+export class Login implements Component {
+  render() {
     const wrapper = document.createElement('div');
 
     const usernameInput = new FormInput({
@@ -27,51 +27,51 @@ export const Login: Component = {
       label: 'Password',
     });
 
-    const selectElement = new FormSelect({
-      name: 'currency',
-      label: 'Currency',
-      options: [
-        {
-          value: 'usd',
-          label: 'USD',
-        },
-        {
-          value: 'uan',
-          label: 'HRYVNA',
-        },
-        {
-          value: 'eur',
-          label: 'EURO',
-        },
-      ],
-    });
+    // const selectElement = new FormSelect({
+    //   name: 'currency',
+    //   label: 'Currency',
+    //   options: [
+    //     {
+    //       value: 'usd',
+    //       label: 'USD',
+    //     },
+    //     {
+    //       value: 'uan',
+    //       label: 'HRYVNA',
+    //     },
+    //     {
+    //       value: 'eur',
+    //       label: 'EURO',
+    //     },
+    //   ],
+    // });
 
-    const checkboxElement = new FormCheckbox({
-      name: 'days',
-      options: [
-        {
-          value: 'Monday',
-        },
-        {
-          value: 'Tuesday',
-        },
-        {
-          value: 'Wednesday',
-        },
-        {
-          value: 'Thursday',
-        },
-        {
-          value: 'Friday',
-        },
-        {
-          value: 'Saturday',
-        },
-        {
-          value: 'Sunday',
-        },
-      ],
-    });
+    // const checkboxElement = new FormCheckbox({
+    //   name: 'days',
+    //   options: [
+    //     {
+    //       value: 'Monday',
+    //     },
+    //     {
+    //       value: 'Tuesday',
+    //     },
+    //     {
+    //       value: 'Wednesday',
+    //     },
+    //     {
+    //       value: 'Thursday',
+    //     },
+    //     {
+    //       value: 'Friday',
+    //     },
+    //     {
+    //       value: 'Saturday',
+    //     },
+    //     {
+    //       value: 'Sunday',
+    //     },
+    //   ],
+    // });
 
     const currentForm = new Form<LoginPayload>({
       onSubmit: async (data) => {
@@ -79,6 +79,7 @@ export const Login: Component = {
           const {
             data: { accessToken, refreshToken },
           } = await loginUser(data);
+
           accessTokenStorage.set(accessToken);
           refreshTokenStorage.set(refreshToken);
         } catch (err) {
@@ -90,7 +91,7 @@ export const Login: Component = {
         }
       },
       validationSchema: loginSchema,
-      controls: [usernameInput, passwordInput, selectElement],
+      controls: [usernameInput, passwordInput],
     });
 
     //window.currentForm = currentForm;
@@ -105,10 +106,10 @@ export const Login: Component = {
       container.render([
         title.render(),
         currentForm.render(),
-        checkboxElement.render(),
+        // checkboxElement.render(),
       ]),
     );
 
     return wrapper;
-  },
-};
+  }
+}
