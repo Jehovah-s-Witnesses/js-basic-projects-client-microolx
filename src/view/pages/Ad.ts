@@ -6,10 +6,6 @@ import { FormSelect } from '../components/FormSelect/FormSelect.ts';
 import { Form } from '../components/Form/Form.ts';
 import { type AdPayload, adSchema } from '../../schemas/ad.schema.ts';
 import { createAd } from '../../api/user.ts';
-import {
-  accessTokenStorage,
-  refreshTokenStorage,
-} from '../../initializers/token.ts';
 import { AxiosError } from 'axios';
 
 export class Ad implements Component {
@@ -99,10 +95,10 @@ export class Ad implements Component {
 
     const container = new Container();
 
-    if (!accessTokenStorage.hasValue()) {
-      location.pathname = '/login';
-      return;
-    }
+    // if (!accessTokenStorage.hasValue()) {
+    //   location.pathname = '/login';
+    //   throw new Error('Not authorized!');
+    // }
 
     wrapper.append(container.render([title.render(), currentForm.render()]));
 
