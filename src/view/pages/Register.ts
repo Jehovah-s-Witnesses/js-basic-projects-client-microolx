@@ -4,7 +4,6 @@ import {
   registerSchema,
 } from '../../schemas/register.schema.ts';
 import { loginUser, registerUser } from '../../api/user.ts';
-import { ajv } from '../../initializers/ajv.ts';
 import { AxiosError } from 'axios';
 import {
   accessTokenStorage,
@@ -15,8 +14,8 @@ import { Form } from '../components/Form/Form.ts';
 import { Title } from '../components/Title/Title.ts';
 import { Container } from '../components/Container/Container.ts';
 
-export const Register: Component = {
-  render(): Element {
+export class Register implements Component {
+  render() {
     const wrapper = document.createElement('div');
 
     const emailInput = new FormInput({
@@ -26,7 +25,7 @@ export const Register: Component = {
 
     const usernameInput = new FormInput({
       name: 'username',
-      label: 'username',
+      label: 'Username',
     });
 
     const passwordInput = new FormInput({
@@ -64,5 +63,5 @@ export const Register: Component = {
     wrapper.append(container.render([title.render(), currentForm.render()]));
 
     return wrapper;
-  },
-};
+  }
+}

@@ -10,7 +10,6 @@ import { FormInput } from '../components/FormInput/FormInput.ts';
 import { Form } from '../components/Form/Form.ts';
 import { Title } from '../components/Title/Title.ts';
 import { Container } from '../components/Container/Container.ts';
-// import { FormSelect } from '../components/FormSelect/FormSelect.ts';
 // import { FormCheckbox } from '../components/FormCheckbox/FormCheckbox.ts';
 
 export class Login implements Component {
@@ -26,25 +25,6 @@ export class Login implements Component {
       name: 'password',
       label: 'Password',
     });
-
-    // const selectElement = new FormSelect({
-    //   name: 'currency',
-    //   label: 'Currency',
-    //   options: [
-    //     {
-    //       value: 'usd',
-    //       label: 'USD',
-    //     },
-    //     {
-    //       value: 'uan',
-    //       label: 'HRYVNA',
-    //     },
-    //     {
-    //       value: 'eur',
-    //       label: 'EURO',
-    //     },
-    //   ],
-    // });
 
     // const checkboxElement = new FormCheckbox({
     //   name: 'days',
@@ -82,6 +62,8 @@ export class Login implements Component {
 
           accessTokenStorage.set(accessToken);
           refreshTokenStorage.set(refreshToken);
+
+          location.pathname = '/ad';
         } catch (err) {
           if (err instanceof AxiosError && err.response) {
             if (err.response.status === 400) {
