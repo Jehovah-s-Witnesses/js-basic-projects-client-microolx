@@ -94,21 +94,16 @@ describe('Create new Ad', () => {
         getByLabelText(container, 'Status'),
         getByRole(container, 'option', { name: 'Public' }),
       );
-      // fireEvent.select(getByLabelText(container, 'Status'), {
-      //   target: { value: 'Public' },
-      // });
 
       fireEvent.submit(getByTestId(container, 'form'));
 
-      await waitFor(() => {
-        expect(adRequestMock.createAd).toHaveBeenNthCalledWith(1, {
-          title: 'sell new car',
-          description: 'sell new car Volvo X60',
-          price: 40000,
-          currency: 'usd',
-          location: 'Dnipro',
-          status: 'public',
-        });
+      expect(adRequestMock.createAd).toHaveBeenNthCalledWith(1, {
+        title: 'sell new car',
+        description: 'sell new car Volvo X60',
+        price: 40000,
+        currency: 'usd',
+        location: 'Dnipro',
+        status: 'public',
       });
     });
 
@@ -141,16 +136,28 @@ describe('Create new Ad', () => {
         target: { value: 'sell new car Volvo X60' },
       });
       fireEvent.change(getByLabelText(container, 'Price'), {
-        target: { value: '40000' },
+        target: { value: 40000 },
       });
-      fireEvent.change(getByLabelText(container, 'Currency'), {
-        target: { value: 'USD' },
-      });
+      await userEvent.selectOptions(
+        getByLabelText(container, 'Currency'),
+        getByRole(container, 'option', { name: 'USD' }),
+      );
       fireEvent.change(getByLabelText(container, 'Location'), {
         target: { value: 'Dnipro' },
       });
-      fireEvent.change(getByLabelText(container, 'Status'), {
-        target: { value: 'Public' },
+      await userEvent.selectOptions(
+        getByLabelText(container, 'Status'),
+        getByRole(container, 'option', { name: 'Public' }),
+      );
+      fireEvent.submit(getByTestId(container, 'form'));
+
+      expect(adRequestMock.createAd).toHaveBeenNthCalledWith(1, {
+        title: 'sell new car',
+        description: 'sell new car Volvo X60',
+        price: 40000,
+        currency: 'usd',
+        location: 'Dnipro',
+        status: 'public',
       });
 
       await waitFor(() => {
