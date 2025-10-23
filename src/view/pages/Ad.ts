@@ -99,6 +99,13 @@ export class Ad implements Component {
         locationInput,
         statusElement,
       ],
+      preparationDataBeforeValidation: (data) => {
+        if (data.price) {
+          data.price = Number(data.price);
+        }
+
+        return data;
+      },
     });
 
     const container = new Container();

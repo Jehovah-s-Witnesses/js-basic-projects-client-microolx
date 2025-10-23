@@ -1,11 +1,11 @@
 import { type Static, Type } from '@sinclair/typebox';
 
-enum Currency {
+export enum Currency {
   usd = 'usd',
   uah = 'uah',
 }
 
-enum Status {
+export enum Status {
   draft = 'draft',
   public = 'public',
   archived = 'archived',

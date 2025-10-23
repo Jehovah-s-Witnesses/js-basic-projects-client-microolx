@@ -2,12 +2,15 @@ import { describe, it, expect, vi } from 'vitest';
 import { Ad } from './Ad.ts';
 import {
   fireEvent,
+  getAllByText,
   getByLabelText,
+  getByRole,
   getByTestId,
   getByText,
   waitFor,
 } from '@testing-library/dom';
 import { AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import { userEvent } from '@testing-library/user-event';
 
 const adRequestMock = vi.hoisted(() => {
   return {
@@ -44,21 +47,18 @@ describe('Create new Ad', () => {
         getByText(container, 'must NOT have fewer than 10 characters'),
       ).not.toBe(null);
       expect(getByText(container, 'must be number')).not.toBe(null);
-      expect(getByText(container, 'must match a schema in anyOf')).not.toBe(
-        null,
-      );
+      expect(
+        getAllByText(container, 'must match a schema in anyOf').length,
+      ).toBe(2);
       expect(
         getByText(container, 'must NOT have fewer than 4 characters'),
       ).not.toBe(null);
-      expect(getByText(container, 'must match a schema in anyOf')).not.toBe(
-        null,
-      );
 
       expect(adRequestMock.createAd).not.toHaveBeenCalled();
     });
   });
 
-  describe('with correct data', () => {
+  describe('with correct data', async () => {
     it('should send request successful', async () => {
       const adPage = new Ad();
 
@@ -82,15 +82,21 @@ describe('Create new Ad', () => {
       fireEvent.change(getByLabelText(container, 'Price'), {
         target: { value: '40000' },
       });
-      fireEvent.change(getByLabelText(container, 'Currency'), {
-        target: { value: 'USD' },
-      });
+      await userEvent.selectOptions(
+        getByLabelText(container, 'Currency'),
+        getByRole(container, 'option', { name: 'USD' }),
+      );
       fireEvent.change(getByLabelText(container, 'Location'), {
         target: { value: 'Dnipro' },
       });
-      fireEvent.change(getByLabelText(container, 'Status'), {
-        target: { value: 'Public' },
-      });
+
+      await userEvent.selectOptions(
+        getByLabelText(container, 'Status'),
+        getByRole(container, 'option', { name: 'Public' }),
+      );
+      // fireEvent.select(getByLabelText(container, 'Status'), {
+      //   target: { value: 'Public' },
+      // });
 
       fireEvent.submit(getByTestId(container, 'form'));
 
@@ -98,10 +104,10 @@ describe('Create new Ad', () => {
         expect(adRequestMock.createAd).toHaveBeenNthCalledWith(1, {
           title: 'sell new car',
           description: 'sell new car Volvo X60',
-          price: '40000',
-          currency: 'USD',
+          price: 40000,
+          currency: 'usd',
           location: 'Dnipro',
-          status: 'Public',
+          status: 'public',
         });
       });
     });
