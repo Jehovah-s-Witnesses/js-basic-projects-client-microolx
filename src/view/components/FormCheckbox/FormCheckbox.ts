@@ -1,5 +1,5 @@
 import type { FormControl } from '../Form/Form.types.ts';
-import { Form_Input_Error_Classname } from '../FormInput/FormInput.constants.ts';
+import { IS_ERROR_CLASSNAME } from '../Constants/constants.ts';
 
 type FormCheckboxOption = {
   value: string;
@@ -47,7 +47,7 @@ export class FormCheckbox implements FormControl {
     }
 
     this.errorMessageElement = document.createElement('p');
-    this.errorMessageElement.classList.add('help', Form_Input_Error_Classname);
+    this.errorMessageElement.classList.add('help', IS_ERROR_CLASSNAME);
     this.errorMessageElement.innerText = message;
 
     this.wrapperElement.append(this.errorMessageElement);

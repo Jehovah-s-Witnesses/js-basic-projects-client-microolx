@@ -1,5 +1,5 @@
 import type { FormControl } from '../Form/Form.types.ts';
-import { Form_Input_Error_Classname } from '../FormInput/FormInput.constants.ts';
+import { IS_ERROR_CLASSNAME } from '../Constants/constants.ts';
 
 type FormSelectOption = {
   value: string;
@@ -27,7 +27,7 @@ export class FormSelect implements FormControl {
     const selectId = crypto.randomUUID();
 
     labelElement.classList.add('label');
-    labelElement.innerText = params.label;
+    labelElement.textContent = params.label;
     labelElement.htmlFor = selectId;
 
     this.wrapperElement.append(labelElement);
@@ -41,7 +41,7 @@ export class FormSelect implements FormControl {
 
     params.options.forEach(({ value, label }) => {
       const optionElement = document.createElement('option');
-      optionElement.innerHTML = label;
+      optionElement.textContent = label;
       optionElement.value = value;
 
       selectElement.append(optionElement);
@@ -55,16 +55,16 @@ export class FormSelect implements FormControl {
 
   setError(message: string) {
     if (this.errorMessageElement) {
-      this.errorMessageElement.innerText = message;
+      this.errorMessageElement.textContent = message;
 
       return;
     }
 
-    this.wrapperSelectElement.classList.add(Form_Input_Error_Classname);
+    this.wrapperSelectElement.classList.add(IS_ERROR_CLASSNAME);
 
     this.errorMessageElement = document.createElement('p');
-    this.errorMessageElement.classList.add('help', Form_Input_Error_Classname);
-    this.errorMessageElement.innerText = message;
+    this.errorMessageElement.classList.add('help', IS_ERROR_CLASSNAME);
+    this.errorMessageElement.textContent = message;
 
     this.wrapperElement.append(this.errorMessageElement);
   }
@@ -73,7 +73,7 @@ export class FormSelect implements FormControl {
     this.errorMessageElement?.remove();
     this.errorMessageElement = null;
 
-    this.wrapperSelectElement.classList.remove(Form_Input_Error_Classname);
+    this.wrapperSelectElement.classList.remove(IS_ERROR_CLASSNAME);
   }
 
   render() {

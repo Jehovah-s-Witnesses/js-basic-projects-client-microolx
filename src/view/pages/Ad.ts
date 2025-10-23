@@ -32,6 +32,10 @@ export class Ad implements Component {
       label: 'Currency',
       options: [
         {
+          value: 'select value',
+          label: 'Select value',
+        },
+        {
           value: 'usd',
           label: 'USD',
         },
@@ -51,6 +55,10 @@ export class Ad implements Component {
       name: 'status',
       label: 'Status',
       options: [
+        {
+          value: 'select value',
+          label: 'Select value',
+        },
         {
           value: 'draft',
           label: 'Draft',

@@ -7,6 +7,7 @@ import {
   getByText,
   waitFor,
 } from '@testing-library/dom';
+import { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 const adRequestMock = vi.hoisted(() => {
   return {
@@ -43,9 +44,15 @@ describe('Create new Ad', () => {
         getByText(container, 'must NOT have fewer than 10 characters'),
       ).not.toBe(null);
       expect(getByText(container, 'must be number')).not.toBe(null);
+      expect(getByText(container, 'must match a schema in anyOf')).not.toBe(
+        null,
+      );
       expect(
         getByText(container, 'must NOT have fewer than 4 characters'),
       ).not.toBe(null);
+      expect(getByText(container, 'must match a schema in anyOf')).not.toBe(
+        null,
+      );
 
       expect(adRequestMock.createAd).not.toHaveBeenCalled();
     });
@@ -75,15 +82,15 @@ describe('Create new Ad', () => {
       fireEvent.change(getByLabelText(container, 'Price'), {
         target: { value: '40000' },
       });
-      // fireEvent.change(getByLabelText(container, 'Currency'), {
-      //   target: { value: 'USD' },
-      // });
+      fireEvent.change(getByLabelText(container, 'Currency'), {
+        target: { value: 'USD' },
+      });
       fireEvent.change(getByLabelText(container, 'Location'), {
         target: { value: 'Dnipro' },
       });
-      // fireEvent.change(getByLabelText(container, 'Status'), {
-      //   target: { value: 'Public' },
-      // });
+      fireEvent.change(getByLabelText(container, 'Status'), {
+        target: { value: 'Public' },
+      });
 
       fireEvent.submit(getByTestId(container, 'form'));
 
@@ -92,8 +99,56 @@ describe('Create new Ad', () => {
           title: 'sell new car',
           description: 'sell new car Volvo X60',
           price: '40000',
+          currency: 'USD',
           location: 'Dnipro',
+          status: 'Public',
         });
+      });
+    });
+
+    it('should reject request', async () => {
+      const adPage = new Ad();
+      const container = adPage.render();
+
+      const error = new AxiosError<{ message: string }>(
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        {
+          config: {} as InternalAxiosRequestConfig,
+          headers: {},
+          request: undefined,
+          status: 400,
+          statusText: '',
+          data: {
+            message: 'BE error',
+          },
+        },
+      );
+
+      adRequestMock.createAd.mockRejectedValue(error);
+      fireEvent.change(getByLabelText(container, 'Title'), {
+        target: { value: 'sell new car' },
+      });
+      fireEvent.change(getByLabelText(container, 'Description'), {
+        target: { value: 'sell new car Volvo X60' },
+      });
+      fireEvent.change(getByLabelText(container, 'Price'), {
+        target: { value: '40000' },
+      });
+      fireEvent.change(getByLabelText(container, 'Currency'), {
+        target: { value: 'USD' },
+      });
+      fireEvent.change(getByLabelText(container, 'Location'), {
+        target: { value: 'Dnipro' },
+      });
+      fireEvent.change(getByLabelText(container, 'Status'), {
+        target: { value: 'Public' },
+      });
+
+      await waitFor(() => {
+        expect(getByText(container, 'BE error')).not.toBe(null);
       });
     });
   });
