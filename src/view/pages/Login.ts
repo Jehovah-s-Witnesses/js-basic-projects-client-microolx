@@ -26,33 +26,6 @@ export class Login implements Component {
       label: 'Password',
     });
 
-    // const checkboxElement = new FormCheckbox({
-    //   name: 'days',
-    //   options: [
-    //     {
-    //       value: 'Monday',
-    //     },
-    //     {
-    //       value: 'Tuesday',
-    //     },
-    //     {
-    //       value: 'Wednesday',
-    //     },
-    //     {
-    //       value: 'Thursday',
-    //     },
-    //     {
-    //       value: 'Friday',
-    //     },
-    //     {
-    //       value: 'Saturday',
-    //     },
-    //     {
-    //       value: 'Sunday',
-    //     },
-    //   ],
-    // });
-
     const currentForm = new Form<LoginPayload>({
       onSubmit: async (data) => {
         try {
@@ -76,21 +49,13 @@ export class Login implements Component {
       controls: [usernameInput, passwordInput],
     });
 
-    //window.currentForm = currentForm;
-
     const title = new Title({
       text: 'Login',
     });
 
     const container = new Container();
 
-    wrapper.append(
-      container.render([
-        title.render(),
-        currentForm.render(),
-        // checkboxElement.render(),
-      ]),
-    );
+    wrapper.append(container.render([title.render(), currentForm.render()]));
 
     return wrapper;
   }
