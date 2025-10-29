@@ -1,1 +1,1 @@
-export const IS_ERROR_CLASSNAME = 'is-danger';
+export const ERROR_CLASSNAME = 'is-danger';

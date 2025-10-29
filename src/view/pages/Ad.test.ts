@@ -9,8 +9,8 @@ import {
   getByText,
   waitFor,
 } from '@testing-library/dom';
-import { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { userEvent } from '@testing-library/user-event';
+import { createAxiosErrorMock } from '../../utils/createAxiosErrorMock.ts';
 
 const adRequestMock = vi.hoisted(() => {
   return {
@@ -68,8 +68,10 @@ describe('Create new Ad', () => {
         data: {
           title: 'sell new car',
           description: 'sell new car Volvo X60',
-          price: '40000',
+          price: 40000,
+          currency: 'USD',
           location: 'Dnipro',
+          status: 'Public',
         },
       });
 
@@ -80,7 +82,7 @@ describe('Create new Ad', () => {
         target: { value: 'sell new car Volvo X60' },
       });
       fireEvent.change(getByLabelText(container, 'Price'), {
-        target: { value: '40000' },
+        target: { value: 40000 },
       });
       await userEvent.selectOptions(
         getByLabelText(container, 'Currency'),
@@ -101,9 +103,9 @@ describe('Create new Ad', () => {
         title: 'sell new car',
         description: 'sell new car Volvo X60',
         price: 40000,
-        currency: 'usd',
+        currency: 'USD',
         location: 'Dnipro',
-        status: 'public',
+        status: 'Public',
       });
     });
 
@@ -111,22 +113,9 @@ describe('Create new Ad', () => {
       const adPage = new Ad();
       const container = adPage.render();
 
-      const error = new AxiosError<{ message: string }>(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        {
-          config: {} as InternalAxiosRequestConfig,
-          headers: {},
-          request: undefined,
-          status: 400,
-          statusText: '',
-          data: {
-            message: 'BE error',
-          },
-        },
-      );
+      const error = createAxiosErrorMock<{ message: string }>({
+        message: 'BE error',
+      });
 
       adRequestMock.createAd.mockRejectedValue(error);
       fireEvent.change(getByLabelText(container, 'Title'), {
@@ -155,9 +144,9 @@ describe('Create new Ad', () => {
         title: 'sell new car',
         description: 'sell new car Volvo X60',
         price: 40000,
-        currency: 'usd',
+        currency: 'USD',
         location: 'Dnipro',
-        status: 'public',
+        status: 'Public',
       });
 
       await waitFor(() => {

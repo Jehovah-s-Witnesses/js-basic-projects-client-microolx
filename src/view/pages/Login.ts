@@ -10,7 +10,8 @@ import { FormInput } from '../components/FormInput/FormInput.ts';
 import { Form } from '../components/Form/Form.ts';
 import { Title } from '../components/Title/Title.ts';
 import { Container } from '../components/Container/Container.ts';
-// import { FormCheckbox } from '../components/FormCheckbox/FormCheckbox.ts';
+import { ROUTES } from '../../types/routes/routes.ts';
+import { Router } from '../../router/router.ts';
 
 export class Login implements Component {
   render() {
@@ -36,7 +37,7 @@ export class Login implements Component {
           accessTokenStorage.set(accessToken);
           refreshTokenStorage.set(refreshToken);
 
-          location.pathname = '/ad';
+          Router.redirect(ROUTES.AD);
         } catch (err) {
           if (err instanceof AxiosError && err.response) {
             if (err.response.status === 400) {

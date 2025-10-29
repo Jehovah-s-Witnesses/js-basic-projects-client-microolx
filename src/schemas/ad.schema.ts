@@ -1,14 +1,14 @@
 import { type Static, Type } from '@sinclair/typebox';
 
 export enum Currency {
-  usd = 'usd',
-  uah = 'uah',
+  USD = 'USD',
+  UAH = 'UAH',
 }
 
 export enum Status {
-  draft = 'draft',
-  public = 'public',
-  archived = 'archived',
+  Draft = 'Draft',
+  Public = 'Public',
+  Archived = 'Archived',
 }
 
 export const adSchema = Type.Object({
@@ -20,4 +20,4 @@ export const adSchema = Type.Object({
   status: Type.Enum(Status),
 });
 
-export type AdPayload = Static<typeof adSchema>;
+export type Ad = Static<typeof adSchema>;

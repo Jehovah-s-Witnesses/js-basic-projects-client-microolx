@@ -1,5 +1,5 @@
 import type { FormControl } from '../Form/Form.types.ts';
-import { IS_ERROR_CLASSNAME } from '../Constants/constants.ts';
+import { ERROR_CLASSNAME } from '../Constants/constants.ts';
 
 type FormSelectOption = {
   value: string;
@@ -60,10 +60,10 @@ export class FormSelect implements FormControl {
       return;
     }
 
-    this.wrapperSelectElement.classList.add(IS_ERROR_CLASSNAME);
+    this.wrapperSelectElement.classList.add(ERROR_CLASSNAME);
 
     this.errorMessageElement = document.createElement('p');
-    this.errorMessageElement.classList.add('help', IS_ERROR_CLASSNAME);
+    this.errorMessageElement.classList.add('help', ERROR_CLASSNAME);
     this.errorMessageElement.textContent = message;
 
     this.wrapperElement.append(this.errorMessageElement);
@@ -73,7 +73,7 @@ export class FormSelect implements FormControl {
     this.errorMessageElement?.remove();
     this.errorMessageElement = null;
 
-    this.wrapperSelectElement.classList.remove(IS_ERROR_CLASSNAME);
+    this.wrapperSelectElement.classList.remove(ERROR_CLASSNAME);
   }
 
   render() {

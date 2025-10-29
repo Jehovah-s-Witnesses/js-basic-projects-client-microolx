@@ -46,7 +46,6 @@ export class Form<DataType> implements Component {
       const valid = ajv.validate(params.validationSchema, payload);
 
       if (!valid && ajv.errors) {
-        console.log(ajv.errors);
         ajv.errors.forEach((err) => {
           const inputName = err.instancePath.replace('/', '');
 

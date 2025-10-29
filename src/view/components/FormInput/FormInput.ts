@@ -1,4 +1,4 @@
-import { IS_ERROR_CLASSNAME } from '../Constants/constants.ts';
+import { ERROR_CLASSNAME } from '../Constants/constants.ts';
 import type { FormControl } from '../Form/Form.types.ts';
 
 type FormInputParams = {
@@ -40,12 +40,12 @@ export class FormInput implements FormControl {
       return;
     }
 
-    this.interactiveElement.classList.add(IS_ERROR_CLASSNAME);
+    this.interactiveElement.classList.add(ERROR_CLASSNAME);
 
     this.errorTextElement = document.createElement('p');
-    this.errorTextElement.classList.add('help', IS_ERROR_CLASSNAME);
+    this.errorTextElement.classList.add('help', ERROR_CLASSNAME);
     this.errorTextElement.textContent = message;
-    this.interactiveElement.classList.add(IS_ERROR_CLASSNAME);
+    this.interactiveElement.classList.add(ERROR_CLASSNAME);
 
     this.wrapperElement.append(this.errorTextElement);
   }
@@ -54,7 +54,7 @@ export class FormInput implements FormControl {
     this.errorTextElement?.remove();
     this.errorTextElement = null;
 
-    this.interactiveElement.classList.remove(IS_ERROR_CLASSNAME);
+    this.interactiveElement.classList.remove(ERROR_CLASSNAME);
   }
 
   render() {

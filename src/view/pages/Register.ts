@@ -13,6 +13,8 @@ import { FormInput } from '../components/FormInput/FormInput.ts';
 import { Form } from '../components/Form/Form.ts';
 import { Title } from '../components/Title/Title.ts';
 import { Container } from '../components/Container/Container.ts';
+import { ROUTES } from '../../types/routes/routes.ts';
+import { Router } from '../../router/router.ts';
 
 export class Register implements Component {
   render() {
@@ -48,6 +50,8 @@ export class Register implements Component {
           } = await loginUser(data);
           accessTokenStorage.set(accessToken);
           refreshTokenStorage.set(refreshToken);
+
+          Router.redirect(ROUTES.LOGIN);
         } catch (err) {
           if (err instanceof AxiosError && err.response) {
             if (err.response.status === 400) {

@@ -7,7 +7,7 @@ import {
   getByText,
   waitFor,
 } from '@testing-library/dom';
-import { AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import { createAxiosErrorMock } from '../../utils/createAxiosErrorMock.ts';
 
 const userRequestMock = vi.hoisted(() => {
   return {
@@ -106,22 +106,9 @@ describe('Login', () => {
 
       const container = loginPage.render();
 
-      const error = new AxiosError<{ message: string }>(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        {
-          config: {} as InternalAxiosRequestConfig,
-          headers: {},
-          request: undefined,
-          status: 400,
-          statusText: '',
-          data: {
-            message: 'BE error',
-          },
-        },
-      );
+      const error = createAxiosErrorMock<{ message: string }>({
+        message: 'BE error',
+      });
 
       userRequestMock.loginUser.mockRejectedValue(error);
       fireEvent.change(getByLabelText(container, 'Username'), {

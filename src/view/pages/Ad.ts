@@ -4,7 +4,12 @@ import { Container } from '../components/Container/Container.ts';
 import { FormInput } from '../components/FormInput/FormInput.ts';
 import { FormSelect } from '../components/FormSelect/FormSelect.ts';
 import { Form } from '../components/Form/Form.ts';
-import { type AdPayload, adSchema } from '../../schemas/ad.schema.ts';
+import {
+  type Ad,
+  adSchema,
+  Currency,
+  Status,
+} from '../../schemas/ad.schema.ts';
 import { createAd } from '../../api/ad.ts';
 import { AxiosError } from 'axios';
 
@@ -36,11 +41,11 @@ export class Ad implements Component {
           label: 'Select value',
         },
         {
-          value: 'usd',
+          value: Currency.USD,
           label: 'USD',
         },
         {
-          value: 'uah',
+          value: Currency.UAH,
           label: 'UAH',
         },
       ],
@@ -60,15 +65,15 @@ export class Ad implements Component {
           label: 'Select value',
         },
         {
-          value: 'draft',
+          value: Status.Draft,
           label: 'Draft',
         },
         {
-          value: 'public',
+          value: Status.Public,
           label: 'Public',
         },
         {
-          value: 'archived',
+          value: Status.Archived,
           label: 'Archived',
         },
       ],
@@ -78,7 +83,7 @@ export class Ad implements Component {
       text: 'Create new Ad',
     });
 
-    const currentForm = new Form<AdPayload>({
+    const currentForm = new Form<Ad>({
       onSubmit: async (data) => {
         try {
           await createAd(data);
