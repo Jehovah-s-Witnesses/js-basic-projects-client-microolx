@@ -51,7 +51,7 @@ export class Register implements Component {
           accessTokenStorage.set(accessToken);
           refreshTokenStorage.set(refreshToken);
 
-          Router.redirect(ROUTES.LOGIN);
+          Router.staticRedirect(ROUTES.LOGIN);
         } catch (err) {
           if (err instanceof AxiosError && err.response) {
             if (err.response.status === 400) {

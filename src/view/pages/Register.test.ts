@@ -27,6 +27,14 @@ const storageMocks = vi.hoisted(() => {
   };
 });
 
+const locationPathMock = vi.hoisted(() => {
+  return {
+    Router: {
+      staticRedirect: vi.fn(),
+    },
+  };
+});
+
 vi.mock('../../initializers/token.ts', () => {
   return {
     accessTokenStorage: storageMocks.accessTokenStorage,
@@ -38,6 +46,12 @@ vi.mock('../../api/user.ts', () => {
   return {
     registerUser: userRequestMock.registerUser,
     loginUser: userRequestMock.loginUser,
+  };
+});
+
+vi.mock('../../router/router.ts', () => {
+  return {
+    Router: locationPathMock.Router,
   };
 });
 
@@ -120,8 +134,12 @@ describe('Register', () => {
           'refresh',
         );
       });
+
+      expect(locationPathMock.Router.staticRedirect).toHaveBeenNthCalledWith(
+        1,
+        '/login',
+      );
     });
-    ///
 
     it('should reject request', async () => {
       const registerPage = new Register();

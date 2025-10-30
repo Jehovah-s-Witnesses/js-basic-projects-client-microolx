@@ -37,7 +37,7 @@ export class Login implements Component {
           accessTokenStorage.set(accessToken);
           refreshTokenStorage.set(refreshToken);
 
-          Router.redirect(ROUTES.AD);
+          Router.staticRedirect(ROUTES.AD);
         } catch (err) {
           if (err instanceof AxiosError && err.response) {
             if (err.response.status === 400) {

@@ -1,7 +1,7 @@
 import { Login } from './view/pages/Login.ts';
 import { Register } from './view/pages/Register.ts';
 import { Router } from './router/router.ts';
-import { Ad } from './view/pages/Ad.ts';
+import { createAdPage } from './view/pages/CreateAdPage.ts';
 import { AdList } from './view/pages/AdList.ts';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       {
         path: '/ad',
-        component: new Ad(),
+        component: new createAdPage(),
       },
       {
         path: '/adList',

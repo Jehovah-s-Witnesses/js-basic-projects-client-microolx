@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { Ad } from './Ad.ts';
+import { createAdPage } from './CreateAdPage.ts';
 import {
   fireEvent,
   getAllByText,
@@ -18,15 +18,19 @@ const adRequestMock = vi.hoisted(() => {
   };
 });
 
-vi.mock('../../api/user.ts', () => {
+vi.mock('../../api/ad.ts', () => {
   return {
     createAd: adRequestMock.createAd,
   };
 });
 
+///!! check console.log mock!!
+
+console.log(adRequestMock);
+
 describe('Create new Ad', () => {
   it('should render correctly', () => {
-    const adPage = new Ad();
+    const adPage = new createAdPage();
     const container = adPage.render();
 
     expect(getByText(container, 'Create new Ad')).not.toBe(null);
@@ -34,7 +38,7 @@ describe('Create new Ad', () => {
 
   describe('with incorrect data', () => {
     it('should show errors and not send request', () => {
-      const adPage = new Ad();
+      const adPage = new createAdPage();
 
       const container = adPage.render();
 
@@ -60,9 +64,11 @@ describe('Create new Ad', () => {
 
   describe('with correct data', async () => {
     it('should send request successful', async () => {
-      const adPage = new Ad();
+      const adPage = new createAdPage();
 
       const container = adPage.render();
+
+      console.log(adRequestMock);
 
       adRequestMock.createAd.mockResolvedValue({
         data: {
@@ -110,7 +116,7 @@ describe('Create new Ad', () => {
     });
 
     it('should reject request', async () => {
-      const adPage = new Ad();
+      const adPage = new createAdPage();
       const container = adPage.render();
 
       const error = createAxiosErrorMock<{ message: string }>({

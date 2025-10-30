@@ -13,7 +13,7 @@ import {
 import { createAd } from '../../api/ad.ts';
 import { AxiosError } from 'axios';
 
-export class Ad implements Component {
+export class createAdPage implements Component {
   render() {
     const wrapper = document.createElement('div');
 

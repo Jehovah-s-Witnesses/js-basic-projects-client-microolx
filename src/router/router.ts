@@ -7,7 +7,7 @@ export class Router {
     this.config = config;
   }
 
-  static redirect(page: string) {
+  static staticRedirect(page: string) {
     location.pathname = page;
   }
 
