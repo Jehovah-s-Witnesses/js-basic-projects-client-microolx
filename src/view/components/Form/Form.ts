@@ -8,6 +8,7 @@ type FormParams<DataType> = {
   onSubmit: (data: DataType) => Promise<void>;
   validationSchema: Schema;
   controls: FormControl[];
+  preparationDataBeforeValidation?: (arg: DataType) => DataType;
 };
 
 export class Form<DataType> implements Component {
@@ -34,12 +35,15 @@ export class Form<DataType> implements Component {
 
       const formData = new FormData(this.formWrapperElement);
       const data = Object.fromEntries(formData) as DataType;
+      const payload = params.preparationDataBeforeValidation
+        ? params.preparationDataBeforeValidation(data)
+        : data;
 
       Object.values(this.controls).forEach((control) => {
         control.clearError();
       });
 
-      const valid = ajv.validate(params.validationSchema, data);
+      const valid = ajv.validate(params.validationSchema, payload);
 
       if (!valid && ajv.errors) {
         ajv.errors.forEach((err) => {
@@ -55,7 +59,7 @@ export class Form<DataType> implements Component {
         return;
       }
 
-      await params.onSubmit(data);
+      await params.onSubmit(payload);
     });
   }
 

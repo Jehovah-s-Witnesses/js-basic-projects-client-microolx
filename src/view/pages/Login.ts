@@ -10,8 +10,8 @@ import { FormInput } from '../components/FormInput/FormInput.ts';
 import { Form } from '../components/Form/Form.ts';
 import { Title } from '../components/Title/Title.ts';
 import { Container } from '../components/Container/Container.ts';
-// import { FormSelect } from '../components/FormSelect/FormSelect.ts';
-// import { FormCheckbox } from '../components/FormCheckbox/FormCheckbox.ts';
+import { ROUTES } from '../../types/routes/routes.ts';
+import { Router } from '../../router/router.ts';
 
 export class Login implements Component {
   render() {
@@ -27,52 +27,6 @@ export class Login implements Component {
       label: 'Password',
     });
 
-    // const selectElement = new FormSelect({
-    //   name: 'currency',
-    //   label: 'Currency',
-    //   options: [
-    //     {
-    //       value: 'usd',
-    //       label: 'USD',
-    //     },
-    //     {
-    //       value: 'uan',
-    //       label: 'HRYVNA',
-    //     },
-    //     {
-    //       value: 'eur',
-    //       label: 'EURO',
-    //     },
-    //   ],
-    // });
-
-    // const checkboxElement = new FormCheckbox({
-    //   name: 'days',
-    //   options: [
-    //     {
-    //       value: 'Monday',
-    //     },
-    //     {
-    //       value: 'Tuesday',
-    //     },
-    //     {
-    //       value: 'Wednesday',
-    //     },
-    //     {
-    //       value: 'Thursday',
-    //     },
-    //     {
-    //       value: 'Friday',
-    //     },
-    //     {
-    //       value: 'Saturday',
-    //     },
-    //     {
-    //       value: 'Sunday',
-    //     },
-    //   ],
-    // });
-
     const currentForm = new Form<LoginPayload>({
       onSubmit: async (data) => {
         try {
@@ -82,6 +36,8 @@ export class Login implements Component {
 
           accessTokenStorage.set(accessToken);
           refreshTokenStorage.set(refreshToken);
+
+          Router.staticRedirect(ROUTES.AD);
         } catch (err) {
           if (err instanceof AxiosError && err.response) {
             if (err.response.status === 400) {
@@ -94,21 +50,13 @@ export class Login implements Component {
       controls: [usernameInput, passwordInput],
     });
 
-    //window.currentForm = currentForm;
-
     const title = new Title({
       text: 'Login',
     });
 
     const container = new Container();
 
-    wrapper.append(
-      container.render([
-        title.render(),
-        currentForm.render(),
-        // checkboxElement.render(),
-      ]),
-    );
+    wrapper.append(container.render([title.render(), currentForm.render()]));
 
     return wrapper;
   }
