@@ -1,5 +1,7 @@
 import type { Component } from '../../../types/Component.ts';
 import type { AdEntity } from '../../../types/dto/ad.ts';
+import { Status } from '../../../schemas/ad.schema.ts';
+import { CardButton } from './CardButton/CardButton.ts';
 
 export class Card implements Component {
   wrapper = document.createElement('div');
@@ -21,11 +23,22 @@ export class Card implements Component {
  <p class="mb-1">${this.data.location}</p>
  <p class="mb-1">${this.data.status}</p>
 </div>
- <footer class="card-footer">
-    <a href="#" class="card-footer-item has-text-primary">Save</a>
-    <a href="#" class="card-footer-item has-text-primary">Delete</a>
-  </footer>
     `;
+
+    if (this.data.status !== Status.Archived) {
+      const footer = document.createElement('footer');
+      footer.classList.add('card-footer');
+      const publishButton = new CardButton('Publish');
+      const archiveButton = new CardButton('Archive');
+
+      if (this.data.status === Status.Draft) {
+        footer.append(publishButton.render(), archiveButton.render());
+      } else {
+        footer.append(archiveButton.render());
+      }
+
+      this.wrapper.append(footer);
+    }
 
     return this.wrapper;
   }
