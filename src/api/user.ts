@@ -1,7 +1,6 @@
 import type { RegisterPayload } from '../schemas/register.schema.ts';
 import { httpClient } from './httpClient.ts';
 import type { LoginPayload } from '../schemas/login.schema.ts';
-// import type { AdPayload } from '../schemas/ad.schema.ts';
 
 export const registerUser = (body: RegisterPayload) => {
   return httpClient.post('/register', body);
