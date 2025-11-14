@@ -3,6 +3,7 @@ import { Container } from '../components/Container/Container.ts';
 import { Title } from '../components/Title/Title.ts';
 import { getOwnAds } from '../../api/ad.ts';
 import { Card } from '../components/Card/Card.ts';
+import { Pagination } from '../components/Pagination/Pagination.ts';
 
 export class AdList implements Component {
   render() {
@@ -12,6 +13,7 @@ export class AdList implements Component {
       text: 'Ads List',
     });
     const container = new Container();
+    const pagination = new Pagination({ total: 54, currentPage: 1 });
 
     const cardListWrapper = document.createElement('div');
 
@@ -23,7 +25,9 @@ export class AdList implements Component {
       });
     });
 
-    wrapper.append(container.render([title.render(), cardListWrapper]));
+    wrapper.append(
+      container.render([title.render(), cardListWrapper, pagination.render()]),
+    );
 
     return wrapper;
   }
