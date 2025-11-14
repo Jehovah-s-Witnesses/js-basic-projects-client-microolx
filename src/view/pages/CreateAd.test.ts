@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { createAdPage } from './CreateAdPage.ts';
+import { CreateAd } from './CreateAd.ts';
 import {
   fireEvent,
   getAllByText,
@@ -14,23 +14,21 @@ import { createAxiosErrorMock } from '../../utils/createAxiosErrorMock.ts';
 
 const adRequestMock = vi.hoisted(() => {
   return {
-    createAd: vi.fn(),
+    createNewAd: vi.fn(),
   };
 });
 
 vi.mock('../../api/ad.ts', () => {
   return {
-    createAd: adRequestMock.createAd,
+    createNewAd: adRequestMock.createNewAd,
   };
 });
 
 ///!! check console.log mock!!
 
-console.log(adRequestMock);
-
 describe('Create new Ad', () => {
   it('should render correctly', () => {
-    const adPage = new createAdPage();
+    const adPage = new CreateAd();
     const container = adPage.render();
 
     expect(getByText(container, 'Create new Ad')).not.toBe(null);
@@ -38,7 +36,7 @@ describe('Create new Ad', () => {
 
   describe('with incorrect data', () => {
     it('should show errors and not send request', () => {
-      const adPage = new createAdPage();
+      const adPage = new CreateAd();
 
       const container = adPage.render();
 
@@ -58,19 +56,17 @@ describe('Create new Ad', () => {
         getByText(container, 'must NOT have fewer than 4 characters'),
       ).not.toBe(null);
 
-      expect(adRequestMock.createAd).not.toHaveBeenCalled();
+      expect(adRequestMock.createNewAd).not.toHaveBeenCalled();
     });
   });
 
   describe('with correct data', async () => {
     it('should send request successful', async () => {
-      const adPage = new createAdPage();
+      const adPage = new CreateAd();
 
       const container = adPage.render();
 
-      console.log(adRequestMock);
-
-      adRequestMock.createAd.mockResolvedValue({
+      adRequestMock.createNewAd.mockResolvedValue({
         data: {
           title: 'sell new car',
           description: 'sell new car Volvo X60',
@@ -105,7 +101,7 @@ describe('Create new Ad', () => {
 
       fireEvent.submit(getByTestId(container, 'form'));
 
-      expect(adRequestMock.createAd).toHaveBeenNthCalledWith(1, {
+      expect(adRequestMock.createNewAd).toHaveBeenNthCalledWith(1, {
         title: 'sell new car',
         description: 'sell new car Volvo X60',
         price: 40000,
@@ -116,14 +112,14 @@ describe('Create new Ad', () => {
     });
 
     it('should reject request', async () => {
-      const adPage = new createAdPage();
+      const adPage = new CreateAd();
       const container = adPage.render();
 
       const error = createAxiosErrorMock<{ message: string }>({
         message: 'BE error',
       });
 
-      adRequestMock.createAd.mockRejectedValue(error);
+      adRequestMock.createNewAd.mockRejectedValue(error);
       fireEvent.change(getByLabelText(container, 'Title'), {
         target: { value: 'sell new car' },
       });
@@ -146,7 +142,7 @@ describe('Create new Ad', () => {
       );
       fireEvent.submit(getByTestId(container, 'form'));
 
-      expect(adRequestMock.createAd).toHaveBeenNthCalledWith(1, {
+      expect(adRequestMock.createNewAd).toHaveBeenNthCalledWith(1, {
         title: 'sell new car',
         description: 'sell new car Volvo X60',
         price: 40000,

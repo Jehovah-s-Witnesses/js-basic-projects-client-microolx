@@ -2,6 +2,7 @@ import type { Component } from '../../../types/Component.ts';
 import type { AdEntity } from '../../../types/dto/ad.ts';
 import { Status } from '../../../schemas/ad.schema.ts';
 import { CardButton } from './CardButton/CardButton.ts';
+import { publishAd } from '../../../api/ad.ts';
 
 export class Card implements Component {
   wrapper = document.createElement('div');
@@ -11,7 +12,7 @@ export class Card implements Component {
     this.data = data;
   }
 
-  render() {
+  rerender() {
     this.wrapper.classList.add('card');
     this.wrapper.innerHTML = `
     <header class="card-header has-background-primary-dark">
@@ -28,8 +29,19 @@ export class Card implements Component {
     if (this.data.status !== Status.Archived) {
       const footer = document.createElement('footer');
       footer.classList.add('card-footer');
-      const publishButton = new CardButton('Publish');
-      const archiveButton = new CardButton('Archive');
+      const publishButton = new CardButton({
+        text: 'Publish',
+        onClick: () => {
+          publishAd(this.data._id, {
+            ...this.data,
+            status: Status.Public,
+          }).then((response) => {
+            this.data = response.data;
+            this.rerender();
+          });
+        },
+      });
+      const archiveButton = new CardButton({ text: 'Archive' });
 
       if (this.data.status === Status.Draft) {
         footer.append(publishButton.render(), archiveButton.render());
@@ -41,5 +53,9 @@ export class Card implements Component {
     }
 
     return this.wrapper;
+  }
+
+  render() {
+    return this.rerender();
   }
 }

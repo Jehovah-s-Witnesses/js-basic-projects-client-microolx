@@ -10,10 +10,10 @@ import {
   Currency,
   Status,
 } from '../../schemas/ad.schema.ts';
-import { createAd } from '../../api/ad.ts';
+import { createNewAd } from '../../api/ad.ts';
 import { AxiosError } from 'axios';
 
-export class createAdPage implements Component {
+export class CreateAd implements Component {
   render() {
     const wrapper = document.createElement('div');
 
@@ -86,7 +86,7 @@ export class createAdPage implements Component {
     const currentForm = new Form<Ad>({
       onSubmit: async (data) => {
         try {
-          await createAd(data);
+          await createNewAd(data);
         } catch (err) {
           if (err instanceof AxiosError && err.response) {
             if (err.response.status === 400) {
