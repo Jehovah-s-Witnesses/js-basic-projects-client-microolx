@@ -1,6 +1,7 @@
 import type { Ad } from '../schemas/ad.schema.ts';
 import { httpClient } from './httpClient.ts';
 import type { AdEntity, AdsGetPayload } from '../types/dto/ad.ts';
+import { DEFAULT_LIMIT } from '../view/components/Constants/constants.ts';
 
 export const createNewAd = (body: Ad) => {
   return httpClient.post<
@@ -10,7 +11,10 @@ export const createNewAd = (body: Ad) => {
   >('/ad', body);
 };
 
-export const getOwnAds = ({ limit = 10, offset = 0 }: AdsGetPayload) => {
+export const getOwnAds = ({
+  limit = DEFAULT_LIMIT,
+  offset = 0,
+}: AdsGetPayload) => {
   return httpClient.get<{ count: number; items: AdEntity[] }>('/ad', {
     params: { limit, offset },
   });
