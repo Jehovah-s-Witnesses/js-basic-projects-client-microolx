@@ -1,21 +1,26 @@
 import type { Component } from '../../../types/Component.ts';
 import { DEFAULT_LIMIT } from '../Constants/constants.ts';
 
+type PaginationChangeCallback = (newPage: number) => void;
+
 type PaginationParams = {
   total: number;
   currentPage: number;
-  onPageChange: (newPage: number) => void;
 };
+
 export class Pagination implements Component {
   navWrapper = document.createElement('nav');
   total: number;
   currentPage: number;
-  onPageChange: PaginationParams['onPageChange'];
+  onPageChange?: PaginationChangeCallback;
 
   constructor(params: PaginationParams) {
     this.total = params.total;
     this.currentPage = params.currentPage;
-    this.onPageChange = params.onPageChange;
+  }
+
+  setOnPageChange(callback: PaginationChangeCallback) {
+    this.onPageChange = callback;
   }
 
   rerender(params: Omit<PaginationParams, 'onPageChange'>) {
@@ -41,7 +46,7 @@ export class Pagination implements Component {
       link.textContent = a.toString();
       link.addEventListener('click', (event) => {
         event.preventDefault();
-        this.onPageChange(a);
+        this.onPageChange?.(a);
       });
       item.append(link);
 
