@@ -2,7 +2,8 @@ import { Login } from './view/pages/Login.ts';
 import { Register } from './view/pages/Register.ts';
 import { Router } from './router/router.ts';
 import { CreateAd } from './view/pages/CreateAd.ts';
-import { AdList } from './view/pages/AdList.ts';
+import { OwnsAdsList } from './view/pages/OwnsAdsList.ts';
+import { PublicAdsPage } from './view/pages/PublicAdsPage.ts';
 
 document.addEventListener('DOMContentLoaded', () => {
   const router = new Router({
@@ -20,8 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
         component: new CreateAd(),
       },
       {
-        path: '/adList',
-        component: new AdList(),
+        path: '/ownAds',
+        component: new OwnsAdsList(),
+      },
+      {
+        path: '/publicAds',
+        component: new PublicAdsPage(),
       },
     ],
   });

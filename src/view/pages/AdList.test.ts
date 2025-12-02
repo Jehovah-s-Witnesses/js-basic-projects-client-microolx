@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { AdList } from './AdList.ts';
+import { OwnsAdsList } from './OwnsAdsList.ts';
 import { findByText, getByText, waitFor } from '@testing-library/dom';
 
 const adListRequestMock = vi.hoisted(() => {
@@ -47,7 +47,7 @@ describe('Ads List', () => {
     },
   });
   it('should render correctly', () => {
-    const adListPage = new AdList();
+    const adListPage = new OwnsAdsList();
     const container = adListPage.render();
 
     expect(getByText(container, 'Ads List')).not.toBe(null);
@@ -55,7 +55,7 @@ describe('Ads List', () => {
 
   describe('with correct data', async () => {
     it('should renders product from API', async () => {
-      const adListPage = new AdList();
+      const adListPage = new OwnsAdsList();
       const container = adListPage.render();
 
       expect(adListRequestMock.getOwnAds).toHaveBeenNthCalledWith(1, {
@@ -83,7 +83,7 @@ describe('Ads List', () => {
         },
       });
 
-      const adListPage = new AdList();
+      const adListPage = new OwnsAdsList();
       const container = adListPage.render();
 
       expect(await findByText(container, 'sell new car')).not.toBe(null);

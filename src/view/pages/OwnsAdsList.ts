@@ -3,7 +3,7 @@ import { CardType } from '../components/Card/Card.type.ts';
 import { ListPage } from '../modules/ListPage.ts';
 import { getOwnAds } from '../../api/ad.ts';
 
-export class AdList implements Component {
+export class OwnsAdsList implements Component {
   render() {
     const listPage = new ListPage({
       title: 'Own ads',

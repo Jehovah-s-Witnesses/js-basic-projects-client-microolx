@@ -45,7 +45,18 @@ export class Card implements Component {
             });
           },
         });
-        const archiveButton = new CardButton({ text: 'Archive' });
+        const archiveButton = new CardButton({
+          text: 'Archive',
+          onClick: () => {
+            publishAd(this.data._id, {
+              ...this.data,
+              status: Status.Archived,
+            }).then((response) => {
+              this.data = response.data;
+              this.rerender();
+            });
+          },
+        });
 
         if (this.data.status === Status.Draft) {
           footer.append(publishButton.render(), archiveButton.render());

@@ -41,7 +41,8 @@ export class Header implements Component {
 
     const loggedLinks = [
       { title: 'Create ad', path: '/ad' },
-      { title: 'Own ads', path: '/adList' },
+      { title: 'Own ads', path: '/ownAds' },
+      { title: 'Public ads', path: '/publicAds' },
     ];
     const unloggedLinks = [
       { title: 'Register', path: '/register' },
